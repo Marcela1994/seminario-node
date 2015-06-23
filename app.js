@@ -2,16 +2,8 @@
  Breve introducción a funciones y asíncronicidad en javascript
  -------------------------------------------------------------
  
- El mismo ejemplo un poco mejor escrito 
+ Simulamos la latencia I/O a disco de lo que supondría la lectura de un fichero
  
-*/
-
-/* código anterior
-
-[1,2,3,4,5].forEach(function(number) {
-	console.log('n ' + number);
-});
-
 */
 
 /* código nuevo */
@@ -33,7 +25,12 @@ function main(){
  * @param {Number} number
  */
 function readFile(number){
-	console.log('n ' + number);
+	var latency = Math.random() * 500; //0-500 ms
+	//simulamos latencia I/O a disco
+	setTimeout(function (){
+		console.log('fichero ' + number + ' leido en ' + latency + 'ms');
+	}, latency);	
 };
+
 
 
