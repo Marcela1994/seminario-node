@@ -2,7 +2,7 @@
  Breve introducción a funciones y asíncronicidad en javascript
  -------------------------------------------------------------
  
- Simulamos la latencia I/O a disco de lo que supondría la lectura de un fichero
+ ¿Que ocurre si damos por sentado que el programa va a esperar a que se lean los ficheros?
  
 */
 
@@ -18,6 +18,7 @@ main();
  */
 function main(){
 	numbers.forEach(readFile);
+	console.log('Hemos leido todos los ficheros');
 };
 
 /**
