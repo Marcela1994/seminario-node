@@ -2,7 +2,7 @@
  Breve introducción a funciones y asíncronicidad en javascript
  -------------------------------------------------------------
  
- Como manejar ejecución en paralelo con el módulo async
+ Aplanamos el codigo anterior para mejorar su calidad
  
 */
 
@@ -15,27 +15,12 @@ main();
 /**
  * Programa principal
  */
-function main(){
-	
-	//codigo anterior
-	/*
-	numbers.forEach(function read(number){
-	  readFile(number, endRead);
-	});
-	*/
-	
+function main(){	
 	//codigo nuevo
-	async.each( //vs eachSeries
+	async.each(
 		numbers, 
-		function read(number, callback){
-			readFile(number, function singleReadFinished(){
-				endRead(number);
-				callback();
-			});
-		},
-		function done() {
-			console.log('El conjunto de acciones ha finalizado en paralelo');
-		}
+		asyncReadFile,
+		processEndProgram
 	);
 };
 
@@ -53,10 +38,31 @@ function readFile(number, callback){
 };
 
 /**
- * Procesamiento que se ejecuta cuando finaliza la lectura
+ * Leemos de forma asíncrona un fichero e invocamos el callback al finalizar
+ * @param {Number} number
+ * @param callback
  */
-function endRead(n){
+function asyncReadFile(number, callback) {
+	readFile(number, function singleReadFinished(){
+		processSingleRead(number, callback);
+	});
+};
+
+/**
+ * Procesamiento que se ejecuta cuando finaliza la lectura
+ * @param {Number} n
+ * @param callback
+ */
+function processSingleRead(n, callback){
 	console.log('Hemos finalizado la lectura del fichero ' + n);
+	callback();
+}
+
+/**
+ * Realizamos acciones una vez finalizada la ejecución del programa
+ */
+function processEndProgram() {
+	console.log('El conjunto de acciones ha finalizado en paralelo');
 }
 
 
