@@ -2,7 +2,7 @@
  Breve introducción a funciones y asíncronicidad en javascript
  -------------------------------------------------------------
  
- ¿Que ocurre si damos por sentado que el programa va a esperar a que se lean los ficheros?
+ Una primera aproximación para manejar callbacks al finalizar la lectura
  
 */
 
@@ -17,21 +17,30 @@ main();
  * Programa principal
  */
 function main(){
-	numbers.forEach(readFile);
-	console.log('Hemos leido todos los ficheros');
+	numbers.forEach(function read(number){
+		readFile(number, endRead);
+	});
 };
 
 /**
  * Leemos el fichero correspondiente al numero especificado
  * @param {Number} number
  */
-function readFile(number){
+function readFile(number, callback){
 	var latency = Math.random() * 500; //0-500 ms
 	//simulamos latencia I/O a disco
-	setTimeout(function (){
+	setTimeout(function ioRead(){
 		console.log('fichero ' + number + ' leido en ' + latency + 'ms');
+		callback(number);
 	}, latency);	
 };
+
+/**
+ * Procesamiento que se ejecuta cuando finaliza la lectura
+ */
+function endRead(n){
+	console.log('Hemos finalizado la lectura del fichero ' + n);
+}
 
 
 
