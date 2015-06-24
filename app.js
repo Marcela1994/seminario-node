@@ -2,7 +2,7 @@
  Breve introducción a funciones y asíncronicidad en javascript
  -------------------------------------------------------------
  
- Aplanamos el codigo anterior para mejorar su calidad
+ Ejemplo real: descargar paginas de resultado de busqueda de google
  
 */
 
