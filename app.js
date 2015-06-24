@@ -7,7 +7,13 @@
 */
 
 var async 	= require('async');
-var numbers = [1,2,3,4,5];
+var request = require('request');
+var fs		= require('fs');
+var mkdirp 	= require('mkdirp');
+
+var downloadDirectory 	= './downloads';
+var pagesToDownload 	= 4;
+
 
 // nuestro programa
 main();
@@ -16,53 +22,67 @@ main();
  * Programa principal
  */
 function main(){	
-	//codigo nuevo
+	
+	var sites = generateSites("buenos aires"); //query que vamos a buscar
+	
 	async.each(
-		numbers, 
-		asyncReadFile,
+		sites, 
+		downloadSingleUri,
 		processEndProgram
 	);
 };
 
 /**
- * Leemos el fichero correspondiente al numero especificado
- * @param {Number} number
+ * Genera un array con los sitios web que queremos descargar
+ * @param {String} query
  */
-function readFile(number, callback){
-	var latency = Math.random() * 500; //0-500 ms
-	//simulamos latencia I/O a disco
-	setTimeout(function ioRead(){
-		console.log('fichero ' + number + ' leido en ' + latency + 'ms');
-		callback(number);
-	}, latency);	
-};
+function generateSites(query){
+	var sites = [];
+	for(var page = 0; page < pagesToDownload; page++) {
+		sites.push({ 
+				uri: 	"https://www.google.es/search?q=" + query + "&start=" + (page * 10),
+				page:	page
+			});
+	}
+	return sites;
+}
 
 /**
- * Leemos de forma asíncrona un fichero e invocamos el callback al finalizar
- * @param {Number} number
+ * Descarga una pagina web en la memoria
+ * @param {Object} site
  * @param callback
  */
-function asyncReadFile(number, callback) {
-	readFile(number, function singleReadFinished(){
-		processSingleRead(number, callback);
-	});
-};
+function downloadSingleUri(site, callback){
+	request(
+		{ uri: site.uri }
+		, function processSingleUri(error, response, body) { 
+			saveOnDisk(site, error, response, body, callback);
+		});
+}
 
 /**
- * Procesamiento que se ejecuta cuando finaliza la lectura
- * @param {Number} n
- * @param callback
+ * Guarda una pagina web en un fichero de disco
  */
-function processSingleRead(n, callback){
-	console.log('Hemos finalizado la lectura del fichero ' + n);
-	callback();
+function saveOnDisk(site, error, response, body, callback) {
+	if (!error && response.statusCode < 400) {
+		mkdirp(downloadDirectory, function saveFile(){
+			fs.writeFile(downloadDirectory + '/page-'+site.page+'.html', body, function (err) {
+				if (!err) console.log('Site '+ site.page+': Guardado en disco');
+				else console.log('Site '+ site.page+': No se pudo guardar en disco '+ err);
+				callback();
+			});
+		});
+	} else {
+		console.log('Site '+ site.page+': No se puede guardar en disco ' + error);
+		callback();
+	}
 }
 
 /**
  * Realizamos acciones una vez finalizada la ejecución del programa
  */
 function processEndProgram() {
-	console.log('El conjunto de acciones ha finalizado en paralelo');
+	console.log('Se descargaron todas las páginas');
 }
 
 
