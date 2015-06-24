@@ -2,21 +2,19 @@
  Breve introducción a node como servidor web
  -------------------------------------------------------------
  
- Hola Mundo en HTTP
+ Hola Mundo en Express
  
 */
 
-var http = require('http');
+var express = require('express');
+var app     = express();
 
-// Configuramos el servidor, que reponderá a todas las peticiones
-var server = http.createServer(function (request, response) {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.end("Bienvenido");
-  //response.end("Bienvenido a " + request.url);
+// Mapa de rutas
+app.get('/', function (req, res) {
+  res.send("Bienvenido a express");
 });
 
-// Escuchamos en el puerto 8000
-server.listen(8000);
-
-// Put a friendly message on the terminal
-console.log("Servidor preparado en http://localhost:8000/");
+// Servidor
+var server = app.listen(8000, function() {
+  console.log('Servidor preparado en http://localhost:%s', server.address().port);
+});
