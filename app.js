@@ -8,6 +8,7 @@
 
 var express     = require('express');
 var bodyParser  = require('body-parser');
+var config      = require('./config.json');
 var app         = express();
 
 // routers
@@ -25,7 +26,7 @@ app.use('/api', api);
 
 // servidor
 // ==============================================
-var port = process.env.PORT || 8000;
+var port = process.env.PORT || config.port;
 var server = app.listen(port, function() {
   console.log('Servidor preparado en http://localhost:%s', server.address().port);
 });

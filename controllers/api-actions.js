@@ -1,5 +1,5 @@
 /* core de la funcionalidad de la aplicación */
-var testMessagesGet = require('./../test/messages-get.json');
+var db = require('./../database/manager');
 
 
 // actions
@@ -7,7 +7,14 @@ var testMessagesGet = require('./../test/messages-get.json');
 
 // obtiene todos los mensajes desde la persistencia
 var getAllMessages = function (req, res) {  
-  res.json(testMessagesGet);
+    
+  var limit = req.param('limit') ? req.param('limit') : 10;
+  var skip  = req.param('skip')  ? req.param('skip')  : 0;
+    
+  db.getMessages(limit, skip, function(messages){
+    res.json(messages);
+  });
+  
 };
 
 
@@ -17,7 +24,8 @@ var postNewMessage = function (req, res) {
   var msg = req.body;
       msg.timestamp = new Date().toISOString();
   
-  //save msg
+  db.addMessage(msg); //OJO, no empleamos callback, funcionamiento en paralelo. (202 aceptado)
+  
   res.status(202);
   res.send();
 };
