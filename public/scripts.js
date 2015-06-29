@@ -23,24 +23,34 @@ function time() {
 
 function submitMessage() {
 	var username = $("#username").val();
+	var message = $("#message").val();
 
-	var msg = {
-		username : username,
-		message : $("#message").val(),
-		timestamp : new Date().toISOString()
-	}
-	//ocultamos el username si ya se ha elegido uno
-	if (username) {
-		$("label[for='username']").hide();
-		$("#username").hide();
-	}
+	if (message){
+		var msg = {
+			username : username,
+			message : message,
+			timestamp : new Date().toISOString()
+		}
+		//ocultamos el username si ya se ha elegido uno
+		if (username) {
+			$("label[for='username']").hide();
+			$("#username").hide();
+		}
 
-	addMessage(msg);
+		//limpiamos el form
+		$("#message").val('');
+		$("#mandatory").removeClass("has-error");
+
+		addMessage(msg);
+	} else
+	{
+		$("#mandatory").addClass("has-error");
+	}
 };
 
 
 $( document ).ready(function() {
     $("#addMessage").click(submitMessage);
     time();
-    window.setInterval(time, 5000);
+    window.setInterval(time, 30000);
 });
