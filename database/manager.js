@@ -45,7 +45,7 @@ var addMessage = function addMessage(msg, callback)
             msg
             , function(err, col){
                 if (err) throw err;
-                callback();
+                if (callback) callback();
                 db.close();
             });
     });

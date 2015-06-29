@@ -8,8 +8,8 @@ var db = require('./../database/manager');
 // obtiene todos los mensajes desde la persistencia
 var getAllMessages = function (req, res) {  
     
-  var limit = req.param('limit') ? req.param('limit') : 10;
-  var skip  = req.param('skip')  ? req.param('skip')  : 0;
+  var limit = req.param('limit') ? Number(req.param('limit')) : 10;
+  var skip  = req.param('skip')  ? Number(req.param('skip'))  : 0;
     
   db.getMessages(limit, skip, function(messages){
     res.json(messages);
