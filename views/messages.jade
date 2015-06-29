@@ -1,23 +1,31 @@
 html
 	head
 		title!= 'Historial del chat'
+		include partials/head
 
 	body
-		h1= "Historial del chat"
+		div.container
+			include partials/navbar
 
-		ul.list-unstyled
-			each msg in messages
-				li
-					strong=msg.username
-					|  #{msg.message} 
+			table#chat.table.table-striped
+				thead
+					tr
+						th="Usuario"
+						th="Mensaje"
+						th
+				tbody
+					each msg in messages
+						tr
+							td=msg.username
+							td=msg.message
+							td.timestamp(data=msg.timestamp)=msg.timestamp
 
-		nav
-			ul.pagination
-				if (page > 1)
-					li
-						a(href="/messages?page="+(page-1))="<<"
-				if (messages.length == 10)
-					li
-						a(href="/messages?page="+(page+1))=">>"
-
+			nav
+				ul.pager
+					li.previous(class=(page > 1 ? "" : "disabled"))
+						a(href="/messages/historial?page="+(page-1) aria-label="Anterior")="← Anterior"
+					li.next(class=(messages.length == 10 ? "" : "disabled"))
+						a(href="/messages/historial?page="+(page+1) aria-label="Siguiente")="Siguiente →"
+						
+		script(src="/public/scripts.js")
 

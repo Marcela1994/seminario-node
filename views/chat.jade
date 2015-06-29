@@ -1,0 +1,28 @@
+html
+	head
+		title!= 'chat by @findemor'
+		include partials/head
+
+	body
+		div.container
+			include partials/navbar
+
+			table#chat.table.table-striped
+				thead
+					tr
+						th="Usuario"
+						th="Mensaje"
+						th
+				tbody
+
+		footer.footer
+			div.input-group
+				label(for="username")="Your name: "
+				input#username.form-control(type="text" placeholder="Username")
+			div.input-group
+				input#message.form-control(type="text" placeholder="Escribe tu mensaje...")
+				span.input-group-btn
+					button#addMessage.btn.btn-primary(type="button")="Enviar!"
+
+		
+		script(src="/public/scripts.js")
