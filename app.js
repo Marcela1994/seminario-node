@@ -14,15 +14,19 @@ var app         = express();
 // routers
 // ==============================================
 var api         = require('./routers/api');
+var web			= require('./routers/web');
 
 // configuramos la aplicacion 
 // ==============================================
 app.use(bodyParser.urlencoded({ extended: true }));   //nos permite obtener urlencode data desde body
 app.use(bodyParser.json());                           //nos permite obtener json data desde body
+app.use("/public", express.static(__dirname + '/public'));
+app.set('view engine', 'jade');
 
 // rutas
 // ==============================================
 app.use('/api', api);
+app.use('/', 	web);
 
 // servidor
 // ==============================================

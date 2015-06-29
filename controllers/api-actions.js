@@ -5,11 +5,11 @@ var db = require('./../database/manager');
 // actions
 // ==============================================
 
-// obtiene todos los mensajes desde la persistencia
-var getAllMessages = function (req, res) {  
+// obtiene todos los mensajes desde el api
+var getAllMessages = function getAllMessages(req, res) {  
     
-  var limit = req.param('limit') ? Number(req.param('limit')) : 10;
-  var skip  = req.param('skip')  ? Number(req.param('skip'))  : 0;
+  var limit = req.query.limit  ? Number(req.query.limit) : 10;
+  var skip  = req.query.skip   ? Number(req.query.skip)  : 0;
     
   db.getMessages(limit, skip, function(messages){
     res.json(messages);
@@ -19,7 +19,7 @@ var getAllMessages = function (req, res) {
 
 
 // publica un nuevo mensaje
-var postNewMessage = function (req, res) {
+var postNewMessage = function postNewMessage(req, res) {
   
   var msg = req.body;
       msg.timestamp = new Date().toISOString();
@@ -34,5 +34,5 @@ var postNewMessage = function (req, res) {
 
 //exports
 var exports = module.exports = {};
-    exports.postNewMessage = postNewMessage;
     exports.getAllMessages = getAllMessages;
+    exports.postNewMessage = postNewMessage;

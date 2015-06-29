@@ -1,5 +1,6 @@
 {
 	"db": "mongodb://localhost:27017/chat",
 	"port": 8000,
-	"apikey": "pass"
+	"apikey": "pass",
+	"apiurl": "http://localhost:8000/api"
 }

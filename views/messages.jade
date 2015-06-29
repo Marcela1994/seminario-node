@@ -1,0 +1,23 @@
+html
+	head
+		title!= 'Historial del chat'
+
+	body
+		h1= "Historial del chat"
+
+		ul.list-unstyled
+			each msg in messages
+				li
+					strong=msg.username
+					|  #{msg.message} 
+
+		nav
+			ul.pagination
+				if (page > 1)
+					li
+						a(href="/messages?page="+(page-1))="<<"
+				if (messages.length == 10)
+					li
+						a(href="/messages?page="+(page+1))=">>"
+
+
