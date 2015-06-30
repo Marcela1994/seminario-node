@@ -13,6 +13,7 @@ var app         = express();
 var server 		= require('http').createServer(app);
 var io 			= require('socket.io')(server);
 var bll			= require('./bll/messages');
+var ioEvents	= require('./bll/socket-events');
 
 
 // routers
@@ -27,6 +28,8 @@ app.use(bodyParser.json());                           //nos permite obtener json
 app.use("/public", express.static(__dirname + '/public'));
 app.set('view engine', 'jade');
 
+app.ioStatus = { numUsers: 0, addedUser: false };
+
 // rutas
 // ==============================================
 app.use('/api', api);
@@ -34,11 +37,8 @@ app.use('/', 	web);
 
 // socket.io
 // ==============================================
-io.on('connection', function (socket) {
-	socket.on('message', function (message) {
-		socket.broadcast.emit('message', message);
-		bll.postNewMessage(message);
-	});
+io.on('connection', function(socket) {
+	ioEvents(socket, app.ioStatus);
 });
 
 // servidor
@@ -46,7 +46,9 @@ io.on('connection', function (socket) {
 var port = process.env.PORT || config.port;
 
 server.listen(port, function() {
-	console.log('Servidor preparado en http://localhost:%s', server.address().port);
+	bll.setupEnvironment(function() {
+		console.log('Servidor preparado en http://localhost:%s', server.address().port);
+	});
 });
 
 

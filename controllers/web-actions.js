@@ -18,21 +18,13 @@ var getAllMessages = function getAllMessages(req, res) {
 
 // obtiene la pantalla de chat en directo
 var getChat = function getChat(req, res) {  
-   
-    res.render('chat', { active: "chat" });
+    res.render('chat', { active: "chat", counter: req.app.ioStatus.numUsers });
 };
 
-
-// publica un nuevo mensaje
-var postNewMessage = function postNewMessage(req, res) {
-  
- 
-};
 
 
 
 //exports
 var exports = module.exports = {};
-    exports.postNewMessage = postNewMessage;
     exports.getAllMessages = getAllMessages;
     exports.getChat		   = getChat;

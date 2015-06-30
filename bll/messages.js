@@ -28,9 +28,14 @@ var postNewMessage = function postNewMessage(msg, callback) {
   
 };
 
+var setupEnvironment = function setupEnvironment(callback) {
+	db.setup(callback);
+}
+
 
 
 //exports
 var exports = module.exports = {};
     exports.getAllMessages = getAllMessages;
     exports.postNewMessage = postNewMessage;
+    exports.setupEnvironment = setupEnvironment;
