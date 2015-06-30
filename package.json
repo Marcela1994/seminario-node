@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Demo de node",
   "main": "app.js",
+  "start": "node app",
   "author": "@findemor",
   "dependencies": {
     "body-parser": "^1.13.1",
