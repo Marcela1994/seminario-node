@@ -1,4 +1,9 @@
 {
+  "name": "findemor-chat",
+  "version": "0.0.1",
+  "description": "Demo de node",
+  "main": "app.js",
+  "author": "@findemor",
   "dependencies": {
     "body-parser": "^1.13.1",
     "express": "^4.13.0",
