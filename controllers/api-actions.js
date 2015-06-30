@@ -1,5 +1,7 @@
 /* core de la funcionalidad de la aplicación */
-var db = require('./../database/manager');
+var db  = require('./../database/manager');
+var bll = require('./../bll/messages');
+
 
 
 // actions
@@ -11,7 +13,7 @@ var getAllMessages = function getAllMessages(req, res) {
   var limit = req.query.limit  ? Number(req.query.limit) : 10;
   var skip  = req.query.skip   ? Number(req.query.skip)  : 0;
     
-  db.getMessages(limit, skip, function(messages){
+  bll.getAllMessages(skip, limit, function(messages) {
     res.json(messages);
   });
   
@@ -22,9 +24,8 @@ var getAllMessages = function getAllMessages(req, res) {
 var postNewMessage = function postNewMessage(req, res) {
   
   var msg = req.body;
-      msg.timestamp = new Date().toISOString();
   
-  db.addMessage(msg); //OJO, no empleamos callback, funcionamiento en paralelo. (202 aceptado)
+  bll.postNewMessage(msg); //OJO, no empleamos callback, funcionamiento en paralelo. (202 aceptado)
   
   res.status(202);
   res.send();

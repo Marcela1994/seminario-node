@@ -1,9 +1,27 @@
+//comunicacion mediante socket.io
+
+var socket;
+
+if (typeof io !== 'undefined') {
+	socket = io();
+	socket.on('message', function(data) {
+		if (!data.username) data.username = "anónimo";
+	    addMessage(data);
+	});
+};
+
+function sendMessage(msg)
+{
+	socket.emit('message', msg);
+}
+
+
 //scripts de representacion 
 
 function addMessage(msg) {
 
 	var html = "<tr>";
-	 	html += "<td>" + "yo" + "</td>"
+	 	html += "<td>" + (msg.username ? msg.username : "yo") + "</td>"
 	 	html += "<td>" + msg.message + "</td>"
 	 	html += "<td class='timestamp' data='" + msg.timestamp + "'>" + msg.timestamp + "</td>"
 	 	html += "</tr>";
@@ -41,7 +59,8 @@ function submitMessage() {
 		$("#message").val('');
 		$("#mandatory").removeClass("has-error");
 
-		addMessage(msg);
+		addMessage({ message: msg.message, timestamp: msg.timestamp });
+		sendMessage(msg);
 	} else
 	{
 		$("#mandatory").addClass("has-error");

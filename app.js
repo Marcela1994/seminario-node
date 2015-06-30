@@ -10,6 +10,10 @@ var express     = require('express');
 var bodyParser  = require('body-parser');
 var config      = require('./config.json');
 var app         = express();
+var server 		= require('http').createServer(app);
+var io 			= require('socket.io')(server);
+var bll			= require('./bll/messages');
+
 
 // routers
 // ==============================================
@@ -28,9 +32,22 @@ app.set('view engine', 'jade');
 app.use('/api', api);
 app.use('/', 	web);
 
+// socket.io
+// ==============================================
+io.on('connection', function (socket) {
+	socket.on('message', function (message) {
+		socket.broadcast.emit('message', message);
+		bll.postNewMessage(message);
+	});
+});
+
 // servidor
 // ==============================================
 var port = process.env.PORT || config.port;
-var server = app.listen(port, function() {
-  console.log('Servidor preparado en http://localhost:%s', server.address().port);
+
+server.listen(port, function() {
+	console.log('Servidor preparado en http://localhost:%s', server.address().port);
 });
+
+
+
