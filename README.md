@@ -58,3 +58,9 @@ Podeis ver este ejemplo en marcha (mientras siga levantado) aqui [http://solu-ch
 ## Documentos relacionados
 
 Presentación: [http://slides.com/findemor](http://slides.com/findemor)
+
+## Autor
+
+El ejemplo es obra de: [@findemor](https://twitter.com/findemor)
+
+Si bien incluye ejemplos del chat de la documentación oficial de node y socket.io
